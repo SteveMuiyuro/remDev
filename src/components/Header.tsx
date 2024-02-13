@@ -2,7 +2,7 @@ import BookmarksButton from "./BookmarksButton";
 import Logo from "./Logo";
 import SearchForm from "./SearchForm";
 
-export default function Header() {
+export default function Header({setSearchText, searchText}) {
   return (
     <header className="header">
       <div className="header__top">
@@ -10,7 +10,7 @@ export default function Header() {
         <BookmarksButton/>
       </div>
 
-      <SearchForm/>
+      <SearchForm setSearchText={setSearchText} searchText={searchText}/>
     </header>
   );
 }
