@@ -1,5 +1,11 @@
 
-export default function SearchForm({searchText, setSearchText}) {
+type searchFormProps = {
+  searchText:string,
+  setSearchText:(text:string) => void;
+}
+
+
+export default function SearchForm({searchText, setSearchText}:searchFormProps) {
 
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>)=> setSearchText(e.target.value)
 

@@ -1,20 +1,15 @@
+import { TjobItem } from "../libs/types";
 import JobListItem from "./JobListItem";
+import Spinner from "./Spinner";
 
-type TjobItem = {
-  badgeLetters: string,
-  company: string,
-  daysAgo: number,
-  id: number,
-  relevanceSCore:number,
-  title:string
+type Tprops = {
+  jobItemsList: TjobItem[]
+  isLoading:boolean
  }
-
- type Tprops = {
-  jobItemList: TjobItem[]
- }
-export function JobList({jobItemsList}:Tprops) {
+export function JobList({jobItemsList, isLoading}:Tprops) {
   return <ul className="job-list">
-    {jobItemsList?.map(jobItem => <JobListItem jobItem ={jobItem}/>)}
+    {isLoading && <Spinner/>}
+    {!isLoading && jobItemsList.map(jobItem => <JobListItem key={jobItem.id} jobItem ={jobItem}/>)}
   </ul>;
 }
 
