@@ -1,6 +1,32 @@
 import { useEffect, useState } from "react";
-import { TjobItem, jobItemProps } from "./types";
+import { TjobItem } from "./types";
 import { BASE_URL } from "./const";
+import { useQuery } from "@tanstack/react-query";
+
+
+export function useJobItem(id:number | null) {
+
+ const {data, isLoading} = useQuery(["job-item", id],
+          async()=>{
+            const res = await fetch(`${BASE_URL}/${id}`)
+            const data = await res.json()
+            return data;
+ },
+
+ {
+  staleTime: 1000*60*60,
+  refetchOnWindowFocus:false,
+  retry:false,
+  enabled:Boolean(id),
+  onError:()=>{}
+ }
+
+ )
+ const jobItem = data?.jobItem
+
+ return {jobItem, isLoading}
+
+}
 
 
 export function useFetchItems(text:string){
@@ -53,29 +79,6 @@ export function useActiveID(){
   return activeID;
 
 }
-
-
-export function useJobItem(id:number | null) {
- const [jobItem, setJobItem] =useState<jobItemProps | null>(null)
- const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(()=> {
-    if(!id) return;
-
-    const fetchJobItem = async ()=> {
-      setIsLoading(true)
-      const res = await fetch(`${BASE_URL}/${id}`)
-      const data = await res.json()
-      setIsLoading(false)
-      setJobItem(data.jobItem)
-    }
-    fetchJobItem()
-  }, [id])
-
- return {jobItem, isLoading} as const;
-
-}
-
 
 export function useDebounce<T>(value :T, delay=500):T {
 
