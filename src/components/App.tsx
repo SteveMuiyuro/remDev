@@ -7,12 +7,13 @@ import SearchForm from "./SearchForm";
 import Sidebar from "./Sidebar";
 import JobItemContent from "./JobItemContent";
 import { useState } from "react";
-import { useFetchItems} from "../libs/hooks";
+import { useDebounce, useFetchItems} from "../libs/hooks";
 
 
 function App() {
   const [searchText, setSearchText] = useState("");
-  const [jobItems, isLoading] = useFetchItems(searchText);
+  const debounceSearchText = useDebounce(searchText, 500);
+  const {jobItemsSliced, isLoading, count} = useFetchItems(debounceSearchText);
 
 
   return(
@@ -23,7 +24,7 @@ function App() {
       <SearchForm setSearchText={setSearchText} searchText={searchText}/>
     </Header>
     <Container>
-      <Sidebar jobItemsList={jobItems} isLoading = {isLoading}/>
+      <Sidebar jobItemsList={jobItemsSliced} isLoading = {isLoading} count={count}/>
       <JobItemContent/>
     </Container>
     <Footer/>

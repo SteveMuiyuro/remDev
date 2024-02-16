@@ -9,13 +9,14 @@ type TjobItem = {
  }
 
  type JobListItemProps ={
-  jobItem: TjobItem
+  jobItem: TjobItem,
+  isActive:boolean
  }
-export default function JobListItem({jobItem}:JobListItemProps) {
+export default function JobListItem({jobItem, isActive}:JobListItemProps) {
 
 
   return (
-    <li className="job-item">
+    <li className={`job-item ${isActive && "job-item--active"}`}>
       <a  href={`#${jobItem.id}`}className="job-item__link">
         <div className="job-item__badge">{jobItem.badgeLetters}</div>
 

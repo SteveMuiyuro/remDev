@@ -6,14 +6,15 @@ import SortingControls from "./SortingControls";
 
 type SidebarProps = {
   jobItemsList: TjobItem[],
-  isLoading:boolean
+  isLoading:boolean,
+  count:number
 }
 
-export default function Sidebar({jobItemsList, isLoading}:SidebarProps) {
+export default function Sidebar({jobItemsList, isLoading, count}:SidebarProps) {
   return (
     <div className="sidebar">
       <div className="sidebar__top">
-        <ResultsCount/>
+        <ResultsCount count={count}/>
         <SortingControls/>
       </div>
      <JobList jobItemsList={jobItemsList} isLoading={isLoading}/>
