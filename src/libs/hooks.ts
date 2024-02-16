@@ -6,12 +6,15 @@ import { useQuery } from "@tanstack/react-query";
 
 export function useJobItem(id:number | null) {
 
+  const fetchJobItem = async (id:number)=>{
+
+      const res = await fetch(`${BASE_URL}/${id}`)
+      const data = await res.json()
+      return data;
+  }
+
  const {data, isLoading} = useQuery(["job-item", id],
-          async()=>{
-            const res = await fetch(`${BASE_URL}/${id}`)
-            const data = await res.json()
-            return data;
- },
+ () => id ?  fetchJobItem(id) : null,
 
  {
   staleTime: 1000*60*60,
