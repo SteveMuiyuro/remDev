@@ -8,6 +8,7 @@ import Sidebar from "./Sidebar";
 import JobItemContent from "./JobItemContent";
 import { useState } from "react";
 import { useDebounce, useFetchItems} from "../libs/hooks";
+import { Toaster } from "react-hot-toast";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
       <JobItemContent/>
     </Container>
     <Footer/>
+    <Toaster position="top-right"/>
    </>
   )
 }

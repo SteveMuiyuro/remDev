@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { TjobItem, jobItemProps } from "./types";
 import { BASE_URL } from "./const";
 import { useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { displayError } from "./utils";
 
 
 export function useJobItem(id:number | null) {
@@ -31,9 +33,7 @@ export function useJobItem(id:number | null) {
   refetchOnWindowFocus:false,
   retry:false,
   enabled:Boolean(id),
-  onError:(error)=>{
-    console.log(error)
-  }
+  onError:displayError
  }
 
  )
@@ -44,33 +44,7 @@ export function useJobItem(id:number | null) {
 }
 
 
-// export function useFetchItems(text:string){
 
-//     const [jobItemsList, setJobItemsList] = useState<TjobItem[]>([]);
-//     const [isLoading, setIsLoading] = useState(false);
-
-
-//   useEffect(()=> {
-//     if(!text) return;
-//     const fetchItems = async()=> {
-//       setIsLoading(true);
-//       const res = await fetch(`${BASE_URL}?search=${text}`)
-//       const data = await res.json();
-//       setIsLoading(false)
-//       setJobItemsList(data.jobItems)
-
-//     }
-
-//     fetchItems()
-//   },[text])
-
-
-//   return {
-//     jobItemsList,
-//     isLoading,
-
-//    } as const;
-// }
 
 export function useFetchItems(text:string){
 
@@ -82,6 +56,10 @@ export function useFetchItems(text:string){
 
   const fetchJobItems = async(text:string): Promise<jobItemsAPIResponse> =>{
     const res = await fetch(`${BASE_URL}?search=${text}`)
+    if(!res.ok) {
+      const errorData = await res.json()
+      throw new Error(errorData.description)
+    }
     const data = await res.json();
     return data;
 
@@ -94,9 +72,7 @@ export function useFetchItems(text:string){
     refetchOnWindowFocus:false,
     retry:false,
     enabled:Boolean(text),
-    onError:(error)=>{
-      console.log(error)
-    }
+    onError:displayError
    }
 
   )
