@@ -14,6 +14,11 @@ export function useJobItem(id:number | null) {
   const fetchJobItem = async (id:number):Promise<jobItemAPIResponse>=>{
 
       const res = await fetch(`${BASE_URL}/${id}`)
+      if(!res.ok) {
+        const errorData = await res.json()
+        throw new Error(errorData)
+      }
+
       const data = await res.json()
       return data;
   }
@@ -26,7 +31,9 @@ export function useJobItem(id:number | null) {
   refetchOnWindowFocus:false,
   retry:false,
   enabled:Boolean(id),
-  onError:()=>{}
+  onError:(error)=>{
+    console.log(error)
+  }
  }
 
  )
@@ -37,34 +44,71 @@ export function useJobItem(id:number | null) {
 }
 
 
+// export function useFetchItems(text:string){
+
+//     const [jobItemsList, setJobItemsList] = useState<TjobItem[]>([]);
+//     const [isLoading, setIsLoading] = useState(false);
+
+
+//   useEffect(()=> {
+//     if(!text) return;
+//     const fetchItems = async()=> {
+//       setIsLoading(true);
+//       const res = await fetch(`${BASE_URL}?search=${text}`)
+//       const data = await res.json();
+//       setIsLoading(false)
+//       setJobItemsList(data.jobItems)
+
+//     }
+
+//     fetchItems()
+//   },[text])
+
+
+//   return {
+//     jobItemsList,
+//     isLoading,
+
+//    } as const;
+// }
+
 export function useFetchItems(text:string){
 
-    const [jobItemsList, setJobItemsList] = useState<TjobItem[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const count = jobItemsList.length
-    const jobItemsSliced = jobItemsList.slice(0, 7);
+  type jobItemsAPIResponse = {
+    public:boolean,
+    sorted:boolean,
+    jobItems:TjobItem[]
+  }
 
-  useEffect(()=> {
-    if(!text) return;
-    const fetchItems = async()=> {
-      setIsLoading(true);
-      const res = await fetch(`${BASE_URL}?search=${text}`)
-      const data = await res.json();
-      setIsLoading(false)
-      setJobItemsList(data.jobItems)
+  const fetchJobItems = async(text:string): Promise<jobItemsAPIResponse> =>{
+    const res = await fetch(`${BASE_URL}?search=${text}`)
+    const data = await res.json();
+    return data;
 
+  }
+
+  const {data, isInitialLoading} = useQuery(["job-items", text],
+  ()=>fetchJobItems(text),
+  {
+    staleTime: 1000*60*60,
+    refetchOnWindowFocus:false,
+    retry:false,
+    enabled:Boolean(text),
+    onError:(error)=>{
+      console.log(error)
     }
+   }
 
-    fetchItems()
-  },[text])
-
-
+  )
   return {
-    jobItemsSliced,
-    isLoading,
-    count
+    jobItemsList:data?.jobItems,
+    isLoading:isInitialLoading
+
    } as const;
 }
+
+
+
 
 export function useActiveID(){
   const [activeID, setActiveID] = useState<number | null>(null)

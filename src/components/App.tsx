@@ -13,8 +13,9 @@ import { useDebounce, useFetchItems} from "../libs/hooks";
 function App() {
   const [searchText, setSearchText] = useState("");
   const debounceSearchText = useDebounce(searchText, 500);
-  const {jobItemsSliced, isLoading, count} = useFetchItems(debounceSearchText);
-
+  const {jobItemsList, isLoading} = useFetchItems(debounceSearchText);
+  const count = jobItemsList?.length || 0
+  const jobItemsSliced = jobItemsList?.slice(0, 7) || [];
 
   return(
    <>
