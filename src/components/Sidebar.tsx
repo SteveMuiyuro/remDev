@@ -8,9 +8,13 @@ type SidebarProps = {
   jobItemsList: TjobItem[],
   isLoading:boolean,
   count:number
+  handlePageChange:(direction:"previous" | "next") => void,
+  currentPage:number,
+  totalPages:number
+
 }
 
-export default function Sidebar({jobItemsList, isLoading, count}:SidebarProps) {
+export default function Sidebar({jobItemsList, isLoading, count, handlePageChange, currentPage, totalPages}:SidebarProps) {
   return (
     <div className="sidebar">
       <div className="sidebar__top">
@@ -18,7 +22,7 @@ export default function Sidebar({jobItemsList, isLoading, count}:SidebarProps) {
         <SortingControls/>
       </div>
      <JobList jobItemsList={jobItemsList} isLoading={isLoading}/>
-     <PaginationControls/>
+     <PaginationControls onClick={handlePageChange} currentPage={currentPage} totalPages={totalPages}/>
     </div>
   );
 }

@@ -15,8 +15,22 @@ function App() {
   const [searchText, setSearchText] = useState("");
   const debounceSearchText = useDebounce(searchText, 500);
   const {jobItemsList, isLoading} = useFetchItems(debounceSearchText);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const count = jobItemsList?.length || 0
-  const jobItemsSliced = jobItemsList?.slice(0, 7) || [];
+  const jobItemsSliced = jobItemsList?.slice(currentPage *7 -7,currentPage * 7) || [];
+
+  const totalPages = count/jobItemsSliced.length;
+
+  const handlePageChange = (direction: "previous" | "next") => {
+    if(direction === "previous") {
+      setCurrentPage(prev => prev - 1)
+    } else {jobItemsSliced
+      setCurrentPage(prev => prev + 1)
+    }
+  }
+
+
 
   return(
    <>
@@ -26,7 +40,15 @@ function App() {
       <SearchForm setSearchText={setSearchText} searchText={searchText}/>
     </Header>
     <Container>
-      <Sidebar jobItemsList={jobItemsSliced} isLoading = {isLoading} count={count}/>
+      <Sidebar
+      jobItemsList={jobItemsSliced}
+      isLoading = {isLoading}
+      count={count}
+      handlePageChange={handlePageChange}
+      currentPage={currentPage}
+      totalPages={totalPages}
+
+      />
       <JobItemContent/>
     </Container>
     <Footer/>
