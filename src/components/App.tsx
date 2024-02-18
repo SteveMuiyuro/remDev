@@ -9,6 +9,7 @@ import JobItemContent from "./JobItemContent";
 import { useState } from "react";
 import { useDebounce, useFetchItems} from "../libs/hooks";
 import { Toaster } from "react-hot-toast";
+import { PAGE_SIZE } from "../libs/const";
 
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const count = jobItemsList?.length || 0
-  const jobItemsSliced = jobItemsList?.slice(currentPage *7 -7,currentPage * 7) || [];
+  const jobItemsSliced = jobItemsList?.slice(currentPage * PAGE_SIZE - PAGE_SIZE,currentPage * PAGE_SIZE) || [];
 
   const totalPages = count/jobItemsSliced.length;
 
