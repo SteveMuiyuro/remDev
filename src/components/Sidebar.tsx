@@ -1,4 +1,4 @@
-import { TjobItem, sortBy } from "../libs/types";
+import { PageDirection, TjobItem, sortBy } from "../libs/types";
 import JobList from "./JobList";
 import PaginationControls from "./PaginationControls";
 import ResultsCount from "./ResultsCount";
@@ -8,7 +8,7 @@ type SidebarProps = {
   jobItemsList: TjobItem[],
   isLoading:boolean,
   count:number
-  handlePageChange:(direction:"previous" | "next") => void,
+  handlePageChange:(direction:PageDirection) => void,
   currentPage:number,
   totalPages:number,
   handleSortBy:(sorted:sortBy)=> void;

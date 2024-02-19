@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useDebounce, useFetchItems} from "../libs/hooks";
 import { Toaster } from "react-hot-toast";
 import { PAGE_SIZE } from "../libs/const";
-import { sortBy } from "../libs/types";
+import { PageDirection, sortBy } from "../libs/types";
 
 
 function App() {
@@ -36,7 +36,7 @@ function App() {
 
   const totalPages = count/jobItemsSliced.length;
 
-  const handlePageChange = (direction: "previous" | "next") => {
+  const handlePageChange = (direction:PageDirection) => {
     if(direction === "previous") {
       setCurrentPage(prev => prev - 1)
     } else {jobItemsSliced

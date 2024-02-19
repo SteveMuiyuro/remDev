@@ -21,3 +21,5 @@ export type jobItemProps = TjobItem & {
 
 
 export type sortBy = "relevant" | "recent"
+
+export type PageDirection = "previous" | "next"
