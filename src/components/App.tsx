@@ -22,13 +22,13 @@ function App() {
 
 
   const count = jobItemsList?.length || 0
-  const jobItemsSorted = jobItemsList?.sort((a, b) => {
+  const jobItemsSorted = [...jobItemsList || []].sort((a, b) => {
     if(sortBy === "relevant") {
       return b.relevanceScore - a.relevanceScore;
     }
       return a.daysAgo - b.daysAgo;
 
-  }) || []
+  })
 
   const jobItemsSliced = jobItemsSorted?.slice(currentPage * PAGE_SIZE - PAGE_SIZE,currentPage * PAGE_SIZE);
 
