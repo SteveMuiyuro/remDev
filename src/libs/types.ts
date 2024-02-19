@@ -3,7 +3,7 @@ export type TjobItem = {
     company: string,
     daysAgo: number,
     id: number,
-    relevanceSCore:number,
+    relevanceScore:number,
     title:string
    }
 
@@ -18,3 +18,6 @@ export type jobItemProps = TjobItem & {
     companyURL:string
 
 }
+
+
+export type sortBy = "relevant" | "recent"

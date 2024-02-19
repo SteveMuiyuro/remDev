@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useDebounce, useFetchItems} from "../libs/hooks";
 import { Toaster } from "react-hot-toast";
 import { PAGE_SIZE } from "../libs/const";
+import { sortBy } from "../libs/types";
 
 
 function App() {
@@ -17,9 +18,21 @@ function App() {
   const debounceSearchText = useDebounce(searchText, 500);
   const {jobItemsList, isLoading} = useFetchItems(debounceSearchText);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortBy, setSortBy] = useState<sortBy>("relevant")
+
 
   const count = jobItemsList?.length || 0
-  const jobItemsSliced = jobItemsList?.slice(currentPage * PAGE_SIZE - PAGE_SIZE,currentPage * PAGE_SIZE) || [];
+  const jobItemsSorted = jobItemsList?.sort((a, b) => {
+    if(sortBy === "relevant") {
+      return b.relevanceScore - a.relevanceScore;
+    }
+      return a.daysAgo - b.daysAgo;
+
+  }) || []
+
+  const jobItemsSliced = jobItemsSorted?.slice(currentPage * PAGE_SIZE - PAGE_SIZE,currentPage * PAGE_SIZE);
+
+
 
   const totalPages = count/jobItemsSliced.length;
 
@@ -29,6 +42,11 @@ function App() {
     } else {jobItemsSliced
       setCurrentPage(prev => prev + 1)
     }
+  }
+
+  const handleSortBy = (sorted:sortBy)=>{
+    setCurrentPage(1)
+    setSortBy(sorted)
   }
 
 
@@ -48,6 +66,8 @@ function App() {
       handlePageChange={handlePageChange}
       currentPage={currentPage}
       totalPages={totalPages}
+      handleSortBy ={handleSortBy}
+      sortBy ={sortBy}
 
       />
       <JobItemContent/>
