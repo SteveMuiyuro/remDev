@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TjobItem, jobItemProps } from "./types";
 import { BASE_URL } from "./const";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { displayError } from "./utils";
+import { BookMarkContext } from "../contexts/BookmarkContextProvider";
 
 
 export function useJobItem(id:number | null) {
@@ -133,5 +134,16 @@ export function useLocalStorage<T>(key:string, intitialValue:T):[T, React.Dispat
     useEffect(()=> {
       localStorage.setItem(key, JSON.stringify(value))
       },[value, key])
-return [value, setValue] as const;
+
+return [value, setValue];
+}
+
+export function useBookmarkContext(){
+  const context = useContext(BookMarkContext)
+
+  if(!context){
+    throw new Error("Please ensure that the component is within the context provider")
+  }
+
+  return context
 }
