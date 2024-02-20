@@ -15,7 +15,7 @@ type BookmarkContextProviderProps ={
 
 export default function BookmarkContextProvider({children}:BookmarkContextProviderProps) {
 
-const [Boomarkedids, setBookMarkIds] = useLocalStorage("Bookmarkids", [])
+const [Boomarkedids, setBookMarkIds] = useLocalStorage<number[]>("Bookmarkids", [])
 
 
 const handleToggledBookmarks = (id:number)=>{
