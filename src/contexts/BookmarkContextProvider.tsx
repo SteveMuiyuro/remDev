@@ -1,4 +1,4 @@
-import { createContext, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 
 
 type BookMarkContextProps = {
@@ -14,8 +14,13 @@ type BookmarkContextProviderProps ={
 
 export default function BookmarkContextProvider({children}:BookmarkContextProviderProps) {
 
-const [Boomarkedids, setBookMarkIds] = useState<number[]>([])
+const [Boomarkedids, setBookMarkIds] = useState<number[]>(
+()=> JSON.parse(localStorage.getItem("Bookmarkids") || "[]")
+)
 
+useEffect(()=> {
+localStorage.setItem("Bookmarkids", JSON.stringify(Boomarkedids))
+},[Boomarkedids])
 
 const handleToggledBookmarks = (id:number)=>{
     if(Boomarkedids.includes(id)) {

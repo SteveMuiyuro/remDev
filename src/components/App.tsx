@@ -6,7 +6,7 @@ import SidebarTop from "./SidebarTop";
 import SearchForm from "./SearchForm";
 import Sidebar from "./Sidebar";
 import JobItemContent from "./JobItemContent";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebounce, useFetchItems} from "../libs/hooks";
 import { Toaster } from "react-hot-toast";
 import { PAGE_SIZE } from "../libs/const";
