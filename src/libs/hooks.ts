@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { TjobItem, jobItemProps } from "./types";
 import { BASE_URL } from "./const";
 import { useQuery } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import { displayError } from "./utils";
 import { BookMarkContext } from "../contexts/BookmarkContextProvider";
 

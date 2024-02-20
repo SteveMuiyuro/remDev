@@ -1,5 +1,5 @@
-import { createContext, useEffect, useState } from "react"
-import { useLocalStorage } from "../libs/hooks"
+import { createContext} from "react"
+import { useFetchItems, useLocalStorage } from "../libs/hooks"
 
 
 type BookMarkContextProps = {
@@ -16,7 +16,7 @@ type BookmarkContextProviderProps ={
 export default function BookmarkContextProvider({children}:BookmarkContextProviderProps) {
 
 const [Boomarkedids, setBookMarkIds] = useLocalStorage<number[]>("Bookmarkids", [])
-
+const {jobItemsList:BookmarkedItemList, isLoading} = useFetchItems(Boomarkedids)
 
 const handleToggledBookmarks = (id:number)=>{
     if(Boomarkedids.includes(id)) {
@@ -31,6 +31,6 @@ const handleToggledBookmarks = (id:number)=>{
 
 
   return (
-    <BookMarkContext.Provider value={{ Boomarkedids, handleToggledBookmarks}}>{children}</BookMarkContext.Provider>
+    <BookMarkContext.Provider value={{ Boomarkedids, handleToggledBookmarks, BookmarkedItemList, isLoading}}>{children}</BookMarkContext.Provider>
   )
 }
