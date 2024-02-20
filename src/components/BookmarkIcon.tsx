@@ -10,7 +10,12 @@ export default function BookmarkIcon({id}:BookMarkIconProps) {
   const {Boomarkedids, handleToggledBookmarks} =  useContext(BookMarkContext)
 
   return (
-    <button onClick={() => handleToggledBookmarks(id)}className="bookmark-btn">
+    <button onClick={(e) => {
+      handleToggledBookmarks(id)
+      e.preventDefault()
+      // e.stopPropagation()
+
+      }}className="bookmark-btn">
       <BookmarkFilledIcon className={`${Boomarkedids.includes(id) ? "filled" : ""}`} />
     </button>
   );
