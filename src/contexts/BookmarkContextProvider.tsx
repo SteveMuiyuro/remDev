@@ -1,10 +1,13 @@
 import { createContext} from "react"
-import { useFetchItems, useLocalStorage } from "../libs/hooks"
+import {  useJobItems, useLocalStorage} from "../libs/hooks"
+import { jobItemProps } from "../libs/types"
 
 
 type BookMarkContextProps = {
-  Boomarkedids: number[],
-  handleToggledBookmarks:(id:number)=> void
+  Bookmarkedids: number[],
+  handleToggledBookmarks:(id:number)=> void,
+  BookmarkedItemList: jobItemProps[]
+  isLoading:boolean
 
 }
 export const BookMarkContext = createContext<BookMarkContextProps| null>(null)
@@ -15,11 +18,12 @@ type BookmarkContextProviderProps ={
 
 export default function BookmarkContextProvider({children}:BookmarkContextProviderProps) {
 
-const [Boomarkedids, setBookMarkIds] = useLocalStorage<number[]>("Bookmarkids", [])
-const {jobItemsList:BookmarkedItemList, isLoading} = useFetchItems(Boomarkedids)
+const [Bookmarkedids, setBookMarkIds] = useLocalStorage<number[]>("Bookmarkids", [])
+const {jobItems:BookmarkedItemList, isLoading} =
+useJobItems(Bookmarkedids)
 
 const handleToggledBookmarks = (id:number)=>{
-    if(Boomarkedids.includes(id)) {
+    if(Bookmarkedids.includes(id)) {
         setBookMarkIds(prev => prev.filter(item => item !== id))
     }
 
@@ -31,6 +35,11 @@ const handleToggledBookmarks = (id:number)=>{
 
 
   return (
-    <BookMarkContext.Provider value={{ Boomarkedids, handleToggledBookmarks, BookmarkedItemList, isLoading}}>{children}</BookMarkContext.Provider>
+    <BookMarkContext.Provider value={{
+      Bookmarkedids,
+      handleToggledBookmarks,
+      BookmarkedItemList,
+      isLoading
+      }}>{children}</BookMarkContext.Provider>
   )
 }

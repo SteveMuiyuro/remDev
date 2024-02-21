@@ -6,7 +6,7 @@ type BookMarkIconProps ={
 }
 
 export default function BookmarkIcon({id}:BookMarkIconProps) {
-  const {Boomarkedids, handleToggledBookmarks} =  useBookmarkContext()
+  const {Bookmarkedids, handleToggledBookmarks} =  useBookmarkContext()
 
   return (
     <button onClick={(e) => {
@@ -15,7 +15,7 @@ export default function BookmarkIcon({id}:BookMarkIconProps) {
       // e.stopPropagation()
 
       }}className="bookmark-btn">
-      <BookmarkFilledIcon className={`${Boomarkedids.includes(id) ? "filled" : ""}`} />
+      <BookmarkFilledIcon className={`${Bookmarkedids.includes(id) ? "filled" : ""}`} />
     </button>
   );
 }

@@ -6,8 +6,8 @@ import SidebarTop from "./SidebarTop";
 import SearchForm from "./SearchForm";
 import Sidebar from "./Sidebar";
 import JobItemContent from "./JobItemContent";
-import { useEffect, useState } from "react";
-import { useDebounce, useFetchItems} from "../libs/hooks";
+import { useState } from "react";
+import { useDebounce, useSearchQuery} from "../libs/hooks";
 import { Toaster } from "react-hot-toast";
 import { PAGE_SIZE } from "../libs/const";
 import { PageDirection, sortBy } from "../libs/types";
@@ -16,7 +16,7 @@ import { PageDirection, sortBy } from "../libs/types";
 function App() {
   const [searchText, setSearchText] = useState("");
   const debounceSearchText = useDebounce(searchText, 500);
-  const {jobItemsList, isLoading} = useFetchItems(debounceSearchText);
+  const {jobItemsList, isLoading} = useSearchQuery(debounceSearchText);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState<sortBy>("relevant")
 

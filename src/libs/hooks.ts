@@ -1,29 +1,29 @@
 import { useContext, useEffect, useState } from "react";
 import { TjobItem, jobItemProps } from "./types";
 import { BASE_URL } from "./const";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { displayError } from "./utils";
 import { BookMarkContext } from "../contexts/BookmarkContextProvider";
 
+const fetchJobItem = async (id:number):Promise<jobItemAPIResponse>=>{
 
+    const res = await fetch(`${BASE_URL}/${id}`)
+    if(!res.ok) {
+      const errorData = await res.json()
+      throw new Error(errorData)
+    }
+
+    const data = await res.json()
+    return data;
+}
+
+
+type jobItemAPIResponse ={
+  public:boolean,
+  jobItem: jobItemProps
+}
 export function useJobItem(id:number | null) {
 
-  type jobItemAPIResponse ={
-    public:boolean,
-    jobItem: jobItemProps
-  }
-
-  const fetchJobItem = async (id:number):Promise<jobItemAPIResponse>=>{
-
-      const res = await fetch(`${BASE_URL}/${id}`)
-      if(!res.ok) {
-        const errorData = await res.json()
-        throw new Error(errorData)
-      }
-
-      const data = await res.json()
-      return data;
-  }
 
  const {data, isInitialLoading:isLoading} = useQuery(["job-item", id],
  () => id ?  fetchJobItem(id) : null,
@@ -46,7 +46,7 @@ export function useJobItem(id:number | null) {
 
 
 
-export function useFetchItems(text:string){
+export function useSearchQuery(text:string){
 
   type jobItemsAPIResponse = {
     public:boolean,
@@ -83,7 +83,26 @@ export function useFetchItems(text:string){
    } as const;
 }
 
+export function useJobItems(ids: number[]) {
+  const results = useQueries({
+   queries:ids.map(id => ({
+    queryKey: ["job-item", id],
+    queryFn:() => fetchJobItem(id),
+    staleTime: 1000*60*60,
+    refetchOnWindowFocus:false,
+    retry:false,
+    enabled:Boolean(id),
+    onError:displayError,
+   }))
+  })
 
+  console.log(results)
+
+  const jobItems = results.map(result => result.data?.jobItem).filter(jobItem => !!jobItem) as jobItemProps[]
+  const isLoading = results.some(result => result.isLoading)
+
+  return {jobItems, isLoading }
+}
 
 
 export function useActiveID(){
