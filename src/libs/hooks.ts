@@ -43,9 +43,6 @@ export function useJobItem(id:number | null) {
 
 }
 
-
-
-
 export function useSearchQuery(text:string){
 
   type jobItemsAPIResponse = {
@@ -104,7 +101,6 @@ export function useJobItems(ids: number[]) {
   return {jobItems, isLoading }
 }
 
-
 export function useActiveID(){
   const [activeID, setActiveID] = useState<number | null>(null)
 
@@ -144,7 +140,6 @@ export function useDebounce<T>(value :T, delay=500):T {
 
 }
 
-
 export function useLocalStorage<T>(key:string, intitialValue:T):[T, React.Dispatch<React.SetStateAction<T>>]{
   const [value, setValue] = useState(
     ()=> JSON.parse(localStorage.getItem(key) || JSON.stringify(intitialValue))
@@ -164,4 +159,25 @@ export function useBookmarkContext(){
   }
 
   return context
+}
+
+
+export function useOnClickOutside(refs:React.RefObject<HTMLElement>[], handler:() => void) {
+  useEffect(()=>{
+
+    const handleClick = (e:MouseEvent) => {
+
+      if(refs.every(ref => !ref.current?.contains(e.target as Node)))
+
+      {
+      handler()
+      }
+
+    }
+
+    document.addEventListener("click", handleClick)
+
+    return () => document.removeEventListener("click", handleClick)
+
+  }, [refs, handler])
 }

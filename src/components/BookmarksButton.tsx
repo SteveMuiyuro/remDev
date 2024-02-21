@@ -1,28 +1,14 @@
 import { TriangleDownIcon } from "@radix-ui/react-icons";
-import { useEffect, useRef, useState } from "react";
+import {useRef, useState } from "react";
 import BookmarksPopover from "./BookmarksPopover";
+import { useOnClickOutside } from "../libs/hooks";
 
 export default function BookmarksButton() {
 
   const [isOpen, setIsOPen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null)
   const divRef = useRef<HTMLDivElement>(null)
-
-  useEffect(()=>{
-
-    const handleClick = (e:MouseEvent) => {
-
-      if(e.target instanceof HTMLElement && !buttonRef.current?.contains(e.target) && !divRef.current?.contains(e.target)) {
-        setIsOPen(false)
-      }
-
-    }
-
-    document.addEventListener("click", handleClick)
-
-    return () => document.removeEventListener("click", handleClick)
-
-  }, [])
+useOnClickOutside([buttonRef, divRef], ()=> setIsOPen(false))
 
   return (
     <section>
