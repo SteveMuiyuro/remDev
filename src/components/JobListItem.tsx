@@ -4,7 +4,7 @@ type TjobItem = {
   company: string,
   daysAgo: number,
   id: number,
-  relevanceSCore:number,
+  relevanceScore:number,
   title:string
  }
 

@@ -4,6 +4,7 @@ import { BASE_URL } from "./const";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { displayError } from "./utils";
 import { BookMarkContext } from "../contexts/BookmarkContextProvider";
+import { ActiveIdContext } from "../contexts/ActiveIdContextProvider";
 
 const fetchJobItem = async (id:number):Promise<jobItemAPIResponse>=>{
 
@@ -161,6 +162,15 @@ export function useBookmarkContext(){
   return context
 }
 
+export function useActiveIdContext(){
+  const context = useContext(ActiveIdContext)
+
+  if(!context){
+    throw new Error("Please ensure that the component is within the context provider")
+  }
+
+  return context
+}
 
 export function useOnClickOutside(refs:React.RefObject<HTMLElement>[], handler:() => void) {
   useEffect(()=>{
