@@ -1,4 +1,4 @@
-import { createContext, useState } from "react"
+import { createContext, useMemo, useState } from "react"
 import { useDebounce } from "../libs/hooks";
 
 
@@ -18,12 +18,19 @@ type SearchContextProps = {
   export default function SearchContextProvider({children}:SearchContextProviserProps) {
     const [searchText, setSearchText] = useState("");
     const debounceSearchText = useDebounce(searchText, 500);
-    
+
+    const contextVariables = useMemo(() => ({
+           searchText,
+           setSearchText,
+           debounceSearchText
+    }), [
+      searchText,
+      setSearchText,
+      debounceSearchText])
+
     return (
-      <SearchContext.Provider value={{
-        searchText,
-        setSearchText,
-        debounceSearchText
-        }}>{children}</SearchContext.Provider>
+      <SearchContext.Provider value={
+        contextVariables
+     }>{children}</SearchContext.Provider>
     )
   }
