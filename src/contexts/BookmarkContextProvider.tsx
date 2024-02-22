@@ -1,4 +1,4 @@
-import { createContext} from "react"
+import { createContext, useCallback, useMemo} from "react"
 import {  useJobItems, useLocalStorage} from "../libs/hooks"
 import { jobItemProps } from "../libs/types"
 
@@ -22,7 +22,7 @@ const [Bookmarkedids, setBookMarkIds] = useLocalStorage<number[]>("Bookmarkids",
 const {jobItems:BookmarkedItemList, isLoading} =
 useJobItems(Bookmarkedids)
 
-const handleToggledBookmarks = (id:number)=>{
+const handleToggledBookmarks = useCallback((id:number)=>{
     if(Bookmarkedids.includes(id)) {
         setBookMarkIds(prev => prev.filter(item => item !== id))
     }
@@ -31,15 +31,20 @@ const handleToggledBookmarks = (id:number)=>{
         setBookMarkIds(prev => [...prev, id])
     }
 
-}
+}, [Bookmarkedids, setBookMarkIds])
 
-
-  return (
-    <BookMarkContext.Provider value={{
+const contextVariables = useMemo(() => ({
       Bookmarkedids,
       handleToggledBookmarks,
       BookmarkedItemList,
       isLoading
-      }}>{children}</BookMarkContext.Provider>
+}), [Bookmarkedids,
+  handleToggledBookmarks,
+  BookmarkedItemList,
+  isLoading])
+
+
+  return (
+    <BookMarkContext.Provider value={contextVariables}>{children}</BookMarkContext.Provider>
   )
 }
