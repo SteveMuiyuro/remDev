@@ -1,4 +1,4 @@
-import { createContext, useState } from "react"
+import { createContext, useMemo, useState } from "react"
 import {  useSearchContext, useSearchQuery } from "../libs/hooks"
 import { PAGE_SIZE } from "../libs/const";
 import { PageDirection, TjobItem, sortBy } from "../libs/types";
@@ -30,15 +30,15 @@ type JobItemListContextProps = {
     const {jobItemsList, isLoading} = useSearchQuery(debounceSearchText);
 
     const count = jobItemsList?.length || 0
-    const jobItemsSorted = [...jobItemsList || []].sort((a, b) => {
+    const jobItemsSorted = useMemo(() => [...jobItemsList || []].sort((a, b) => {
       if(sortBy === "relevant") {
         return b.relevanceScore - a.relevanceScore;
       }
         return a.daysAgo - b.daysAgo;
 
-    })
+    }), [jobItemsList, sortBy])
 
-    const jobItemsSliced = jobItemsSorted?.slice(currentPage * PAGE_SIZE - PAGE_SIZE,currentPage * PAGE_SIZE);
+    const jobItemsSliced = useMemo(() => jobItemsSorted?.slice(currentPage * PAGE_SIZE - PAGE_SIZE,currentPage * PAGE_SIZE), [currentPage, jobItemsSorted]);
 
 
 
