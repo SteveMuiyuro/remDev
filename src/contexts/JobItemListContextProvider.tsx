@@ -1,4 +1,4 @@
-import { createContext, useMemo, useState } from "react"
+import { createContext, useCallback, useMemo, useState } from "react"
 import {  useSearchContext, useSearchQuery } from "../libs/hooks"
 import { PAGE_SIZE } from "../libs/const";
 import { PageDirection, TjobItem, sortBy } from "../libs/types";
@@ -44,33 +44,42 @@ type JobItemListContextProps = {
 
     const totalPages = count / PAGE_SIZE;
 
-    const handlePageChange = (direction:PageDirection) => {
+    const handlePageChange = useCallback(() => (direction:PageDirection) => {
       if(direction === "previous") {
         setCurrentPage(prev => prev - 1)
-      } else {jobItemsSliced
+      } else {
         setCurrentPage(prev => prev + 1)
       }
-    }
+    }, [])
 
-    const handleSortBy = (sorted:sortBy)=>{
+    const handleSortBy = useCallback(() => (sorted:sortBy)=>{
       setCurrentPage(1)
       setSortBy(sorted)
-    }
+    }, [])
 
+
+    const contextVariables =  useMemo( ()=> ({
+      handleSortBy,
+      handlePageChange,
+      totalPages,
+      jobItemsSliced,
+      count,
+      sortBy,
+      currentPage,
+      isLoading
+    }), [handleSortBy,
+      handlePageChange,
+      totalPages,
+      jobItemsSliced,
+      count,
+      sortBy,
+      currentPage,
+      isLoading])
 
 
     return (
       <JobItemListContext.Provider value={
-        {
-            handleSortBy,
-            handlePageChange,
-            totalPages,
-            jobItemsSliced,
-            count,
-            sortBy,
-            currentPage,
-            isLoading
-        }
+        contextVariables
       }>{children}</JobItemListContext.Provider>
     )
   }
