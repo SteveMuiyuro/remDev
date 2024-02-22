@@ -44,7 +44,7 @@ type JobItemListContextProps = {
 
     const totalPages = count / PAGE_SIZE;
 
-    const handlePageChange = useCallback(() => (direction:PageDirection) => {
+    const handlePageChange = useCallback((direction:PageDirection) => {
       if(direction === "previous") {
         setCurrentPage(prev => prev - 1)
       } else {
@@ -52,13 +52,13 @@ type JobItemListContextProps = {
       }
     }, [])
 
-    const handleSortBy = useCallback(() => (sorted:sortBy)=>{
+    const handleSortBy = useCallback((sorted:sortBy)=>{
       setCurrentPage(1)
       setSortBy(sorted)
     }, [])
 
 
-    const contextVariables =  useMemo( ()=> ({
+    const contextVariables =  useMemo(()=> ({
       handleSortBy,
       handlePageChange,
       totalPages,
