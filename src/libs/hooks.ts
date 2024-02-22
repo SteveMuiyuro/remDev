@@ -5,6 +5,9 @@ import { useQueries, useQuery } from "@tanstack/react-query";
 import { displayError } from "./utils";
 import { BookMarkContext } from "../contexts/BookmarkContextProvider";
 import { ActiveIdContext } from "../contexts/ActiveIdContextProvider";
+import { SearchContext } from "../contexts/SearchContextProvider";
+import { JobItemListContext } from "../contexts/JobItemListContextProvider";
+
 
 const fetchJobItem = async (id:number):Promise<jobItemAPIResponse>=>{
 
@@ -94,7 +97,6 @@ export function useJobItems(ids: number[]) {
    }))
   })
 
-  console.log(results)
 
   const jobItems = results.map(result => result.data?.jobItem).filter(jobItem => !!jobItem) as jobItemProps[]
   const isLoading = results.some(result => result.isLoading)
@@ -156,7 +158,7 @@ export function useBookmarkContext(){
   const context = useContext(BookMarkContext)
 
   if(!context){
-    throw new Error("Please ensure that the component is within the context provider")
+    throw new Error("Please ensure that the component is within the Bookmark context provider")
   }
 
   return context
@@ -166,7 +168,7 @@ export function useActiveIdContext(){
   const context = useContext(ActiveIdContext)
 
   if(!context){
-    throw new Error("Please ensure that the component is within the context provider")
+    throw new Error("Please ensure that the component is within the activeid context provider")
   }
 
   return context
@@ -190,4 +192,24 @@ export function useOnClickOutside(refs:React.RefObject<HTMLElement>[], handler:(
     return () => document.removeEventListener("click", handleClick)
 
   }, [refs, handler])
+}
+
+export function useSearchContext(){
+  const context = useContext(SearchContext)
+
+  if(!context){
+    throw new Error("Please ensure that the component is within the searchcontext provider")
+  }
+
+  return context
+}
+
+export function useJobItemContext(){
+  const context = useContext(JobItemListContext)
+
+  if(!context){
+    throw new Error("Please ensure that the component is within the JobItemList provider")
+  }
+
+  return context
 }

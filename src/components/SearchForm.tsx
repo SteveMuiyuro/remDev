@@ -1,11 +1,11 @@
-
-type searchFormProps = {
-  searchText:string,
-  setSearchText:(text:string) => void;
-}
+import { useSearchContext } from "../libs/hooks";
 
 
-export default function SearchForm({searchText, setSearchText}:searchFormProps) {
+
+
+export default function SearchForm() {
+
+  const {searchText, setSearchText} = useSearchContext()
 
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>)=> setSearchText(e.target.value)
 

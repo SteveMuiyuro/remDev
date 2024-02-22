@@ -1,29 +1,18 @@
-import { PageDirection, TjobItem, sortBy } from "../libs/types";
-import JobList from "./JobList";
+
+import JobListDummyItem from "./JobListDummyItem";
 import PaginationControls from "./PaginationControls";
 import ResultsCount from "./ResultsCount";
 import SortingControls from "./SortingControls";
 
-type SidebarProps = {
-  jobItemsList: TjobItem[],
-  isLoading:boolean,
-  count:number
-  handlePageChange:(direction:PageDirection) => void,
-  currentPage:number,
-  totalPages:number,
-  handleSortBy:(sorted:sortBy)=> void;
-  sortBy:sortBy
-}
-
-export default function Sidebar({jobItemsList, isLoading, count, handlePageChange, currentPage, totalPages, handleSortBy, sortBy}:SidebarProps) {
+export default function Sidebar() {
   return (
     <div className="sidebar">
       <div className="sidebar__top">
-        <ResultsCount count={count}/>
-        <SortingControls onClick={handleSortBy} sortBy={sortBy}/>
+        <ResultsCount />
+        <SortingControls />
       </div>
-     <JobList jobItemsList={jobItemsList} isLoading={isLoading}/>
-     <PaginationControls onClick={handlePageChange} currentPage={currentPage} totalPages={totalPages}/>
+      <JobListDummyItem/>
+     <PaginationControls />
     </div>
   );
 }

@@ -1,11 +1,10 @@
-import { sortBy } from "../libs/types";
+import { useJobItemContext } from "../libs/hooks";
 
-type SortingControlsProps = {
-  onClick:(sorted:sortBy)=> void,
-  sortBy:sortBy
-}
 
-export default function SortingControls({onClick, sortBy}:SortingControlsProps) {
+
+export default function SortingControls() {
+
+  const {sortBy, handleSortBy:onClick} = useJobItemContext()
 
   return (
     <section className="sorting">
